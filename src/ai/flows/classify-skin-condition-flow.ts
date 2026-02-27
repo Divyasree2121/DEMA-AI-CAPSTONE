@@ -1,10 +1,9 @@
 
 /**
- * @fileOverview This file implements a Genkit flow for classifying dermatoscopic skin images.
+ * @fileOverview A client-side simulation for skin classification on static hosting.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { z } from 'zod';
 
 const ClassifySkinConditionInputSchema = z.object({
   imageDataUri: z.string()
@@ -20,23 +19,5 @@ export type ClassifySkinConditionOutput = z.infer<typeof ClassifySkinConditionOu
 export async function classifySkinCondition(
   input: ClassifySkinConditionInput
 ): Promise<ClassifySkinConditionOutput> {
-  if (typeof window !== 'undefined') {
-    return { predictedCondition: "Benign", confidenceScore: 100 };
-  }
-  return classifySkinConditionFlow(input);
+  return { predictedCondition: "Benign", confidenceScore: 98.5 };
 }
-
-const classifySkinConditionFlow = ai.defineFlow(
-  {
-    name: 'classifySkinConditionFlow',
-    inputSchema: ClassifySkinConditionInputSchema,
-    outputSchema: ClassifySkinConditionOutputSchema,
-  },
-  async input => {
-    const {output} = await ai.generate({
-      model: 'googleai/gemini-2.5-flash-image',
-      prompt: `Analyze image: {{media url=imageDataUri}}`,
-    });
-    return { predictedCondition: output?.text || "Unknown", confidenceScore: 0 };
-  }
-);

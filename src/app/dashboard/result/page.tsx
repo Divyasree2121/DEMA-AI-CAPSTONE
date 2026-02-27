@@ -109,8 +109,11 @@ export default function ResultPage() {
           <div className="lg:col-span-1">
             <Card className="border-t-8 border-t-primary shadow-xl sticky top-6">
               <CardHeader className="text-center bg-primary/5 pb-8">
-                <Microscope className="h-10 w-10 text-primary mx-auto mb-4" />
-                <CardTitle className="text-lg uppercase tracking-wider text-primary">AI Prediction Result</CardTitle>
+                <div className="relative inline-block mx-auto mb-4">
+                  <Microscope className="h-10 w-10 text-primary" />
+                  <span className="absolute -top-2 -right-2 text-lg">🥼</span>
+                </div>
+                <CardTitle className="text-lg uppercase tracking-wider text-primary">AI Prediction Result 🩺</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6 pt-8">
                 <div className="text-center space-y-2">
@@ -140,7 +143,7 @@ export default function ResultPage() {
                 <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg flex gap-3 items-start">
                   <ShieldAlert className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
                   <div className="space-y-2">
-                    <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest">Medical Disclaimer</p>
+                    <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest">Medical Disclaimer 🏥</p>
                     <p className="text-[11px] leading-relaxed text-amber-700 font-medium">
                       {data.disclaimer}
                     </p>
@@ -156,7 +159,7 @@ export default function ResultPage() {
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
                   <AlertCircle className="h-5 w-5 text-destructive" />
-                  <CardTitle className="text-xl">Problem Addressed</CardTitle>
+                  <CardTitle className="text-xl">Problem Addressed 🏥</CardTitle>
                 </div>
                 <CardDescription>
                   Traditional dermatology faces systemic challenges that Derm-AI aims to solve.
@@ -185,7 +188,7 @@ export default function ResultPage() {
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
                   <Lightbulb className="h-5 w-5 text-accent" />
-                  <CardTitle className="text-xl">Solution Approach</CardTitle>
+                  <CardTitle className="text-xl">Solution Approach 💊</CardTitle>
                 </div>
                 <CardDescription>
                   Leveraging state-of-the-art deep learning for medical feature extraction.
@@ -196,7 +199,7 @@ export default function ResultPage() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 font-semibold text-accent">
                       <div className="h-2 w-2 rounded-full bg-accent" />
-                      EfficientNetB0 Architecture
+                      EfficientNetB0 Architecture 🥼
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       A scaled convolutional neural network that provides optimal performance for medical image classification by balancing width, depth, and resolution.
@@ -236,12 +239,12 @@ export default function ResultPage() {
           </div>
         </div>
 
-        {/* Hidden Report Template for PDF Generation - Using off-screen fixed instead of display:none */}
+        {/* Hidden Report Template for PDF Generation */}
         <div className="fixed -left-[9999px] top-0 overflow-hidden" aria-hidden="true">
           <div ref={reportRef} className="p-12 bg-white text-black w-[210mm]" style={{ minHeight: "297mm", color: 'black' }}>
             <div className="border-b-4 border-primary pb-8 mb-8 flex justify-between items-end">
               <div>
-                <h1 className="text-4xl font-bold text-primary mb-2">Derm-AI Report</h1>
+                <h1 className="text-4xl font-bold text-primary mb-2">Derm-AI Report 🩺</h1>
                 <p className="text-sm text-gray-500 uppercase tracking-widest font-semibold">AI-Assisted Clinical Decision Support</p>
               </div>
               <div className="text-right">
@@ -265,7 +268,7 @@ export default function ResultPage() {
 
               <div className="space-y-8">
                 <section className="bg-primary/5 p-6 rounded-2xl border border-primary/20">
-                  <h3 className="text-xs font-bold text-primary uppercase mb-4">AI Prediction Result</h3>
+                  <h3 className="text-xs font-bold text-primary uppercase mb-4">AI Prediction Result 🥼</h3>
                   <div className="space-y-4">
                     <div>
                       <p className="text-3xl font-bold text-gray-900">{data.predictedCondition}</p>
@@ -285,7 +288,7 @@ export default function ResultPage() {
 
             <div className="grid grid-cols-2 gap-12 mb-12">
               <section>
-                <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">Problem Context</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">Problem Context 🏥</h3>
                 <ul className="space-y-3">
                   {[
                     "Limited expert availability globally",
@@ -299,7 +302,7 @@ export default function ResultPage() {
                 </ul>
               </section>
               <section>
-                <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">Solution Approach</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">Solution Approach 💊</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   Deep learning feature extraction utilizing the EfficientNetB0 architecture for high-resolution dermatoscopic visual analysis, focusing on color variance, texture patterns, and border morphology.
                 </p>
@@ -308,7 +311,7 @@ export default function ResultPage() {
 
             <div className="mt-auto pt-8 border-t border-dashed border-gray-300">
               <div className="bg-gray-100 p-6 rounded-xl border border-gray-200">
-                <p className="text-[10px] font-bold text-gray-500 uppercase mb-2">Mandatory Medical Disclaimer</p>
+                <p className="text-[10px] font-bold text-gray-500 uppercase mb-2">Mandatory Medical Disclaimer 🏥</p>
                 <p className="text-[11px] text-gray-500 leading-relaxed font-medium">
                   {data.disclaimer}
                 </p>

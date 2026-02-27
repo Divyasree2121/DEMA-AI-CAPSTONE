@@ -64,7 +64,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Microscope className="h-10 w-10 text-primary" />
             <div>
-              <h1 className="text-3xl font-bold font-headline text-primary">Derm-AI Analysis</h1>
+              <h1 className="text-3xl font-bold font-headline text-primary">Derm-AI Analysis 🩺</h1>
               <p className="text-sm text-muted-foreground uppercase tracking-widest">Workflow Manager</p>
             </div>
           </div>
@@ -78,13 +78,13 @@ export default function DashboardPage() {
           <div className="md:col-span-1 space-y-4">
             <h3 className="font-semibold text-sm uppercase text-muted-foreground mb-4">Pipeline Progress</h3>
             {[
-              { id: 1, label: "Upload Image" },
-              { id: 2, label: "Preprocessing" },
-              { id: 3, label: "Model Analysis" },
-              { id: 4, label: "Classification" }
+              { id: 1, label: "Upload Image", emoji: "🩺" },
+              { id: 2, label: "Preprocessing", emoji: "🥼" },
+              { id: 3, label: "Model Analysis", emoji: "💊" },
+              { id: 4, label: "Classification", emoji: "🏥" }
             ].map((s) => (
               <div key={s.id} className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${analysisStep === s.id ? 'bg-primary text-white border-primary shadow-md' : 'bg-white opacity-50'}`}>
-                {analysisStep > s.id ? <CheckCircle2 className="h-5 w-5" /> : <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center text-[10px] ${analysisStep === s.id ? 'border-white' : 'border-muted-foreground'}`}>{s.id}</div>}
+                {analysisStep > s.id ? <CheckCircle2 className="h-5 w-5" /> : <span className="text-sm">{s.emoji}</span>}
                 <span className="text-sm font-medium">{s.label}</span>
               </div>
             ))}

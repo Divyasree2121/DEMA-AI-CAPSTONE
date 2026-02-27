@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { LoadingSplash } from "@/components/ui/loading-splash"
 import { Button } from "@/components/ui/button"
-import { Activity, ShieldCheck, Cpu } from "lucide-react"
+import { Activity, ShieldCheck, Cpu, Microscope, FlaskConical, Dna } from "lucide-react"
 
 export default function Home() {
   const [loading, setLoading] = React.useState(true)
@@ -29,34 +29,48 @@ export default function Home() {
           </div>
           <h1 className="text-7xl font-headline font-bold tracking-tight text-primary">Derm-AI 🩺</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A state-of-the-art AI-assisted decision-support tool for dermatoscopic analysis.
+            AI-assisted skin condition classification using dermatoscopic image analysis.
           </p>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-          <div className="p-6 bg-card border rounded-xl shadow-sm space-y-2">
+          <div className="p-6 bg-card border rounded-xl shadow-sm space-y-4 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
-              <Cpu className="h-6 w-6 text-accent" />
-              <span className="text-xl">🥼</span>
+              <div className="p-2 bg-accent/10 rounded-lg">
+                <FlaskConical className="h-6 w-6 text-accent" />
+              </div>
+              <span className="text-xl">🧪</span>
             </div>
-            <h3 className="font-bold">EfficientNetB0</h3>
-            <p className="text-sm text-muted-foreground">Deep learning architecture optimized for dermatological feature extraction.</p>
+            <div>
+              <h3 className="font-bold text-lg">Automated Image Interpretation</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">AI-driven analysis reduces manual assessment variability and standardizes evaluation.</p>
+            </div>
           </div>
-          <div className="p-6 bg-card border rounded-xl shadow-sm space-y-2">
+          
+          <div className="p-6 bg-card border rounded-xl shadow-sm space-y-4 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
-              <ShieldCheck className="h-6 w-6 text-primary" />
-              <span className="text-xl">🏥</span>
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Microscope className="h-6 w-6 text-primary" />
+              </div>
+              <span className="text-xl">🩺</span>
             </div>
-            <h3 className="font-bold">Medical Protocol</h3>
-            <p className="text-sm text-muted-foreground">Designed as a clinical decision support system for academic research.</p>
+            <div>
+              <h3 className="font-bold text-lg">Decision-Support Focus</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Assists clinicians and researchers without replacing expert medical judgment.</p>
+            </div>
           </div>
-          <div className="p-6 bg-card border rounded-xl shadow-sm space-y-2">
+
+          <div className="p-6 bg-card border rounded-xl shadow-sm space-y-4 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
-              <Activity className="h-6 w-6 text-accent" />
-              <span className="text-xl">💊</span>
+              <div className="p-2 bg-accent/10 rounded-lg">
+                <Dna className="h-6 w-6 text-accent" />
+              </div>
+              <span className="text-xl">🧬</span>
             </div>
-            <h3 className="font-bold">10 Conditions</h3>
-            <p className="text-sm text-muted-foreground">Comprehensive multi-class classification for common skin pathologies.</p>
+            <div>
+              <h3 className="font-bold text-lg">Broad Condition Coverage</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Supports classification of inflammatory, benign, and malignant skin lesions.</p>
+            </div>
           </div>
         </div>
 
@@ -69,8 +83,8 @@ export default function Home() {
           </Button>
         </div>
 
-        <footer className="pt-12 text-muted-foreground text-xs uppercase tracking-widest">
-          Final Year Academic Project • AI in Healthcare
+        <footer className="pt-12 text-muted-foreground text-xs uppercase tracking-widest border-t">
+          Final Year Academic Project • AI in Healthcare • © 2024
         </footer>
       </div>
     </div>

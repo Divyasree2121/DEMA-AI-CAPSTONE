@@ -72,10 +72,6 @@ export default function LoginPage() {
           </div>
         </CardFooter>
       </Card>
-
-      <div className="mt-8 max-w-md text-center text-[10px] text-muted-foreground uppercase tracking-widest leading-relaxed">
-        Restricted Access • Academic Decision Support System
-      </div>
     </div>
   )
 }

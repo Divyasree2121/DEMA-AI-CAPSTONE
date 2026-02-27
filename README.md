@@ -19,3 +19,4 @@ To deploy this project to GitHub Pages:
 
 ---
 Derm-AI • © 2026
+# derm-AI

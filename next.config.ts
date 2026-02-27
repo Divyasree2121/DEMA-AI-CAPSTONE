@@ -4,7 +4,6 @@ import type {NextConfig} from 'next';
 const nextConfig: NextConfig = {
   output: 'export',
   basePath: '/derm-AI',
-  assetPrefix: '/derm-AI/',
   trailingSlash: true,
   typescript: {
     ignoreBuildErrors: true,

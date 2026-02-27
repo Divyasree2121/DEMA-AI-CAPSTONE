@@ -6,8 +6,9 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { Upload, X, CheckCircle2, Loader2, Microscope, BrainCircuit } from "lucide-react"
+import { Upload, X, CheckCircle2, Loader2, Microscope, BrainCircuit, Archive } from "lucide-react"
 import { preprocessAnalyzeImage, type PreprocessAnalyzeImageOutput } from "@/ai/flows/preprocess-analyze-image-flow"
+import Link from "next/link"
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -60,7 +61,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
-        <header className="flex items-center justify-between border-b pb-6">
+        <header className="flex flex-col sm:flex-row items-center justify-between border-b pb-6 gap-4">
           <div className="flex items-center gap-3">
             <Microscope className="h-10 w-10 text-primary" />
             <div>
@@ -68,9 +69,17 @@ export default function DashboardPage() {
               <p className="text-sm text-muted-foreground uppercase tracking-widest">Workflow Manager</p>
             </div>
           </div>
-          <Button variant="ghost" asChild>
-            <a href="/">Logout</a>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" asChild className="gap-2">
+              <Link href="/dashboard/vault">
+                <Archive className="h-4 w-4" />
+                My Vault 🛡️
+              </Link>
+            </Button>
+            <Button variant="ghost" asChild>
+              <a href="/">Logout</a>
+            </Button>
+          </div>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">

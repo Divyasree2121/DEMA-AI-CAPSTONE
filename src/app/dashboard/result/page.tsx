@@ -7,16 +7,26 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { AlertCircle, ChevronLeft, Lightbulb, Microscope, ShieldAlert, TrendingUp, FileDown, Loader2 } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from "@/components/ui/dialog"
+import { AlertCircle, ChevronLeft, Lightbulb, Microscope, ShieldAlert, TrendingUp, FileDown, Loader2, Save, Lock, Info } from "lucide-react"
 import type { PreprocessAnalyzeImageOutput } from "@/ai/flows/preprocess-analyze-image-flow"
+import { encryptData } from "@/lib/crypto"
+import { useToast } from "@/hooks/use-toast"
 
 export default function ResultPage() {
   const router = useRouter()
+  const { toast } = useToast()
   const [data, setData] = React.useState<PreprocessAnalyzeImageOutput | null>(null)
   const [image, setImage] = React.useState<string | null>(null)
   const [isDownloading, setIsDownloading] = React.useState(false)
+  const [isSaving, setIsSaving] = React.useState(false)
   const [sessionId, setSessionId] = React.useState("")
   const [analysisDate, setAnalysisDate] = React.useState("")
+  const [savePassword, setSavePassword] = React.useState("")
+  const [confirmPassword, setConfirmPassword] = React.useState("")
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = React.useState(false)
   const reportRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
@@ -42,7 +52,6 @@ export default function ResultPage() {
     setIsDownloading(true)
     
     try {
-      // Dynamic imports for browser-only libraries
       const html2canvas = (await import("html2canvas")).default
       const { jsPDF } = await import("jspdf")
       
@@ -53,9 +62,7 @@ export default function ResultPage() {
         backgroundColor: "#ffffff"
       })
       
-      // Use JPEG for better compatibility and smaller data strings
       const imgData = canvas.toDataURL("image/jpeg", 0.95)
-      
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
@@ -65,15 +72,78 @@ export default function ResultPage() {
       const pdfWidth = pdf.internal.pageSize.getWidth()
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width
       
-      // Explicitly using JPEG format to avoid corruption errors
       pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight)
       pdf.save(`Derm-AI-Report-${sessionId}.pdf`)
       
     } catch (error) {
       console.error("PDF Generation failed:", error)
-      alert("Failed to generate PDF. Please try again.")
+      toast({
+        variant: "destructive",
+        title: "Download Failed",
+        description: "Could not generate PDF report."
+      })
     } finally {
       setIsDownloading(false)
+    }
+  }
+
+  const handleSaveToVault = async () => {
+    if (!data || !image) return
+    if (savePassword !== confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "Passwords mismatch",
+        description: "Please ensure both password fields are identical."
+      })
+      return
+    }
+    if (savePassword.length < 6) {
+      toast({
+        variant: "destructive",
+        title: "Weak Password",
+        description: "Password must be at least 6 characters long."
+      })
+      return
+    }
+
+    setIsSaving(true)
+    try {
+      const payload = JSON.stringify({
+        data,
+        image,
+        sessionId,
+        analysisDate
+      })
+      
+      const encrypted = await encryptData(payload, savePassword)
+      
+      const existingVault = JSON.parse(localStorage.getItem("derm_ai_vault") || "[]")
+      const newEntry = {
+        id: crypto.randomUUID(),
+        date: new Date().toISOString(),
+        condition: data.predictedCondition,
+        encryptedData: encrypted,
+        sessionId
+      }
+      
+      localStorage.setItem("derm_ai_vault", JSON.stringify([newEntry, ...existingVault]))
+      
+      toast({
+        title: "Report Saved! 🔒",
+        description: "The report is now securely stored in your Local Vault."
+      })
+      setIsSaveDialogOpen(false)
+      setSavePassword("")
+      setConfirmPassword("")
+    } catch (error) {
+      console.error("Save failed:", error)
+      toast({
+        variant: "destructive",
+        title: "Save Failed",
+        description: "An error occurred while encrypting the data."
+      })
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -82,12 +152,64 @@ export default function ResultPage() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
-        <header className="flex items-center justify-between border-b pb-6">
-          <Button variant="ghost" onClick={() => router.push("/dashboard")} className="gap-2">
+        <header className="flex flex-col sm:flex-row items-center justify-between border-b pb-6 gap-4">
+          <Button variant="ghost" onClick={() => router.push("/dashboard")} className="gap-2 self-start">
             <ChevronLeft className="h-4 w-4" />
             Back to Dashboard
           </Button>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="gap-2 border-primary text-primary hover:bg-primary/5">
+                  <Save className="h-4 w-4" />
+                  Save to Local Vault
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Lock className="h-5 w-5 text-primary" />
+                    Secure Report Vault 🛡️
+                  </DialogTitle>
+                  <DialogDescription>
+                    Set a password to encrypt and save this report locally in your browser.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="pass">Set Password</Label>
+                    <Input 
+                      id="pass" 
+                      type="password" 
+                      placeholder="Min 6 characters" 
+                      value={savePassword}
+                      onChange={(e) => setSavePassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirm">Confirm Password</Label>
+                    <Input 
+                      id="confirm" 
+                      type="password" 
+                      placeholder="Repeat password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800">
+                    <Info className="h-4 w-4 shrink-0 mt-0.5" />
+                    <p>This password will be required to open the report later. We do not store this password; if lost, the report cannot be recovered.</p>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button onClick={handleSaveToVault} disabled={isSaving} className="w-full">
+                    {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                    Encrypt & Save Report
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
             <Button 
               onClick={handleDownloadReport} 
               disabled={isDownloading}
@@ -95,12 +217,8 @@ export default function ResultPage() {
               className="gap-2 bg-accent hover:bg-accent/90 shadow-md"
             >
               {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
-              Download Report (PDF)
+              Download (PDF)
             </Button>
-            <div className="text-right hidden sm:block">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Session ID</p>
-              <p className="text-sm font-mono text-primary">{sessionId}</p>
-            </div>
           </div>
         </header>
 
@@ -284,29 +402,6 @@ export default function ResultPage() {
                   </div>
                 </section>
               </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-12 mb-12">
-              <section>
-                <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">Problem Context 🏥</h3>
-                <ul className="space-y-3">
-                  {[
-                    "Limited expert availability globally",
-                    "Subjective manual diagnosis patterns",
-                    "Dataset bias in textbook examples"
-                  ].map((p, i) => (
-                    <li key={i} className="flex gap-3 text-sm text-gray-600">
-                      <span className="text-primary font-bold">•</span> {p}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-              <section>
-                <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">Solution Approach 💊</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Deep learning feature extraction utilizing the EfficientNetB0 architecture for high-resolution dermatoscopic visual analysis, focusing on color variance, texture patterns, and border morphology.
-                </p>
-              </section>
             </div>
 
             <div className="mt-auto pt-8 border-t border-dashed border-gray-300">

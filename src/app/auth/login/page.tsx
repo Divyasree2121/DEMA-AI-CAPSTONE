@@ -31,7 +31,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Welcome Back</CardTitle>
           <CardDescription className="text-center">
-            Login to access the AI analysis pipeline
+            Login to access
           </CardDescription>
         </CardHeader>
         <CardContent>

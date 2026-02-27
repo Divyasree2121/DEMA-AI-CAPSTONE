@@ -102,7 +102,7 @@ export default function SignupPage() {
           </div>
           <div className="flex items-start gap-2 p-3 bg-muted rounded-md border text-[11px] text-muted-foreground leading-snug">
             <ShieldAlert className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-            <p>User data is collected strictly for academic verification and system access control purposes within the Derm-AI 🏥 research project framework.</p>
+            <p>User data is collected only for academic verification and access control purposes.</p>
           </div>
         </CardFooter>
       </Card>

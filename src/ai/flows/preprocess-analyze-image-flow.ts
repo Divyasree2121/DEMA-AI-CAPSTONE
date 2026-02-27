@@ -1,7 +1,7 @@
 
 'use server';
 /**
- * @fileOverview A dermatoscopic image analysis AI agent.
+ * @fileOverview A real dermatoscopic image analysis AI agent using Gemini.
  */
 
 import {ai} from '@/ai/genkit';

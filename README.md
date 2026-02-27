@@ -19,3 +19,4 @@ npm run genkit:dev
 
 ---
 Derm-AI • © 2026
+# derm-AI

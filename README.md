@@ -1,32 +1,23 @@
+Derm-AI 🏥
 
-# Derm-AI 🏥
+Skin condition classification using dermatoscopic image analysis.
 
-AI-assisted skin condition classification using dermatoscopic image analysis.
-
-## Local Development
+🚀 Local Development
 
 To start the development server and run the application locally:
 
-```bash
 npm run dev
-```
 
-The application will be available at [http://localhost:3000](http://localhost:3000).
 
-## AI Flows (Genkit)
+The application will be available at:
+http://localhost:3000
 
-To test and debug the AI analysis flows using the Genkit developer interface:
-
-```bash
-npm run genkit:dev
-```
-
-## Features
-
-- **Dermatoscopic Image Analysis:** High-resolution skin scan processing.
-- **AI Classification:** Multi-class classification using Gemini models.
-- **Secure Vault:** AES-256 encrypted local storage for clinical reports.
-- **PDF Generation:** Downloadable clinical analysis reports.
-
----
-Derm-AI • © 2026
+🌟 Features
+Dermatoscopic Image Analysis:
+Processes high-resolution skin images for detailed examination.
+Multi-Class Classification:
+Identifies and categorizes various skin conditions based on image data.
+Secure Vault:
+Stores clinical reports locally with AES-256 encryption for data protection.
+PDF Generation:
+Generates downloadable clinical analysis reports.

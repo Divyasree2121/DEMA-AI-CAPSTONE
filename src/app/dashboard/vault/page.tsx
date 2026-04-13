@@ -50,7 +50,7 @@ export default function VaultPage() {
       
       // Store in transient storage for the result page to pick up
       localStorage.setItem("derm_ai_result", JSON.stringify(decrypted.data))
-      localStorage.setItem("derm_ai_image", decrypted.image)
+      localStorage.setItem("derm_ai_image", decrypted.image || null)
       
       toast({
         title: "Decryption Successful 🔓",

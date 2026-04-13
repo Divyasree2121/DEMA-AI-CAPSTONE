@@ -110,7 +110,7 @@ export default function ResultPage() {
     try {
       const payload = JSON.stringify({
         data,
-        image,
+        // image, // Removed to save storage space
         sessionId,
         analysisDate
       })
@@ -126,7 +126,10 @@ export default function ResultPage() {
         sessionId
       }
       
-      localStorage.setItem("derm_ai_vault", JSON.stringify([newEntry, ...existingVault]))
+      // Limit vault to 5 most recent entries to prevent quota exceeded
+      const updatedVault = [newEntry, ...existingVault].slice(0, 5)
+      
+      localStorage.setItem("derm_ai_vault", JSON.stringify(updatedVault))
       
       toast({
         title: "Report Saved! 🔒",
